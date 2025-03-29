@@ -1,105 +1,457 @@
-/* Sidebar Container */
+/* Enhanced Sidebar with improved colors and animations */
 .sidebar {
     width: 250px;
-    background-color: #c62828;
+    background: linear-gradient(150deg, #c62828 0%, #b71c1c 85%, #8c0000 100%);
     color: white;
-    height: 100vh;
+    height: calc(100vh - 20px);
     position: fixed;
-    left: 0;
-    /* Change from -250px to 0 for visibility */
-    transition: 0.3s ease-in-out;
+    left: -250px; 
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding-top: 80px;
+    margin-top: 65px;
     display: flex;
     flex-direction: column;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
-    /* Adds depth */
+    box-shadow: 2px 0px 20px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
+/* Custom scrollbar styling */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Enhanced open animation */
+.sidebar.open {
+  left: 0;
+  box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.5);
+  transform: translateZ(0); /* Enables hardware acceleration */
+}
+
+/* Fix the overlay issue when navigating */
+.sidebar.open + .content {
+  /* Remove this rule that adds overlay */
+  opacity: 1 !important; /* Override any opacity settings */
+  pointer-events: auto !important; /* Ensure content remains interactive */
+}
+
+/* If you have a separate overlay element, add this */
+.sidebar-overlay {
+  display: none; /* Hide any overlay */
+}
+
+/* Toggle Button with improved styling */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Enhanced pulsing animation */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.8); }
+  70% { box-shadow: 0 0 0 12px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+.sidebar-toggle:hover {
+  transform: scale(1.08) rotate(90deg);
+  animation: pulseGlow 1.5s infinite;
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+}
 
 .sidebar li {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out, padding-left 0.3s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 20px;
+  margin: 5px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Ripple Effect */
+.sidebar li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.sidebar li:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(30) translate(-50%, -50%);
+    opacity: 0;
+  }
 }
 
 .sidebar li:hover {
-    background: #a91b1b;
-    padding-left: 25px;
-    /* Slight movement effect */
-    color: #f1f1f1;
+  background: rgba(255, 255, 255, 0.15);
+  padding-left: 25px;
+  transform: translateX(3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Logo Container */
+/* Improved logo container */
+.logo-container {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  padding: 15px;
+  background: linear-gradient(90deg, #8c0000 0%, #b71c1c 100%);
+  z-index: 1000;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
 
+.sidebar.open .logo-container {
+  left: 0;
+  animation: fadeInDown 0.4s forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced logo styling */
 .logo-img {
-    width: 190px;
-    height: 80px;
-    cursor: pointer;
+  width: 190px;
+  height: 80px;
+  cursor: pointer;
+  max-width: 150px;
+  max-height: 60px;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
+/* Enhanced logo placeholder */
+.logo-placeholder {
+  height: 60px;
+  width: 150px;
+  background: linear-gradient(45deg, #8c0000 0%, #d32f2f 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  border-radius: 8px;
+  margin: 0 auto;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-placeholder:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, #9a0000 0%, #e53935 100%);
+}
 
 /* Menu */
 .menu {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
+  list-style: none;
+  padding: 0;
+  margin-top: 10px; /* Space after logo */
+  padding-bottom: 30px; /* Extra padding at bottom for scrolling */
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .menu li {
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    gap: 10px;
-    cursor: pointer;
-    transition: 0.2s;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .menu li:hover {
-    background: #333;
+  background: #333;
 }
 
-/* Dropdown */
+/* Enhanced dropdown menus */
 .dropdown-menu {
-    background: #b71c1c;
-    padding: 5px 0;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+  background: rgba(140, 0, 0, 0.8);
+  margin: 0 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.3);
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.42, 0, 0.58, 1), 
+              opacity 0.3s ease-in-out, 
+              transform 0.3s ease-in-out;
+  transform: translateY(-10px);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-menu.open {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  animation: slideDown 0.3s forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0.8;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropdown-menu li {
-    padding: 10px 25px;
-    font-size: 16px;
-    transition: background 0.3s ease-in-out;
+  padding: 10px 15px;
+  margin: 3px 6px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border-left: 0px solid rgba(255, 255, 255, 0);
 }
 
 .dropdown-menu li:hover {
-    background: #a91b1b;
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 3px solid rgba(255, 255, 255, 0.5);
+  padding-left: 17px;
 }
-
 
 /* Rotate Arrow */
 .rotate {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 /* Search Bar */
 .search-bar input {
-    width: 90%;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
+  width: 90%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
 }
 
 .search-bar input:focus {
-    outline: none;
-    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
 }
+
+/* PDF Link Enhancement */
+.pdf-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.pdf-link:hover {
+  color: #fff;
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pdf-link:hover svg {
+  animation: bounceIcon 0.6s ease infinite alternate;
+}
+
+@keyframes bounceIcon {
+  from { transform: translateX(0); }
+  to { transform: translateX(4px); }
+}
+
+.pdf-link svg {
+  font-size: 14px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+    left: -280px;
+    z-index: 1000;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
+  }
+  
+  .logo-container {
+    width: 280px;
+    left: -280px;
+  }
+  
+  .sidebar.open .logo-container {
+    left: 0;
+  }
+}
+
+/* Media Queries for Responsive Design */
+@media (min-width: 769px) {
+    /* For desktop: sidebar is always visible */
+    .sidebar {
+        left: 0;
+    }
+    
+    .logo-container {
+        left: 0;
+    }
+    
+    /* Hide toggle button on desktop */
+    .sidebar-toggle {
+        display: none;
+    }
+    
+    /* Adjust content to make room for sidebar */
+    .content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+}
+
+/* Active link styling */
+.active-link, .active-parent {
+  background: rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-left: 3px solid rgba(255, 255, 255, 0.6);
+  padding-left: 17px !important;
+}
+
+/* Smooth animation for chevron rotation */
+.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+/* Staggered animation for menu items when sidebar opens */
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sidebar.open .menu li {
+    animation: slideInItem 0.5s ease forwards;
+    opacity: 0;
+}
+
+/* Apply different delays to create staggered effect */
+.sidebar.open .menu li:nth-child(1) { animation-delay: 0.05s; }
+.sidebar.open .menu li:nth-child(2) { animation-delay: 0.1s; }
+.sidebar.open .menu li:nth-child(3) { animation-delay: 0.15s; }
+.sidebar.open .menu li:nth-child(4) { animation-delay: 0.2s; }
+.sidebar.open .menu li:nth-child(5) { animation-delay: 0.25s; }
+.sidebar.open .menu li:nth-child(6) { animation-delay: 0.3s; }
+.sidebar.open .menu li:nth-child(7) { animation-delay: 0.35s; }
+.sidebar.open .menu li:nth-child(8) { animation-delay: 0.4s; }
+.sidebar.open .menu li:nth-child(9) { animation-delay: 0.45s; }
+.sidebar.open .menu li:nth-child(10) { animation-delay: 0.5s; }

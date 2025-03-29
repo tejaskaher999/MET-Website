@@ -1,0 +1,11 @@
+.home-button {
+  position: relative;
+  margin-left: 15px; /* Add space between logo and button */
+  z-index: 10; /* Ensure button stays above other elements */
+  display: inline-block;
+}
+
+.logo-container {
+  position: relative;
+  z-index: 5; /* Lower z-index than the button */
+}
