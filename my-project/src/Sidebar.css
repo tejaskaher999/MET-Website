@@ -17,6 +17,15 @@
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 /* Custom scrollbar styling */
@@ -158,6 +167,7 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border-bottom: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1001; /* Higher than sidebar to stay on top */
 }
 
 .sidebar.open .logo-container {
@@ -247,7 +257,7 @@
   background: rgba(140, 0, 0, 0.8);
   margin: 0 15px;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible; /* Keep this as visible */
   box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.3);
   max-height: 0;
   opacity: 0;
@@ -257,13 +267,57 @@
   transform: translateY(-10px);
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 5;
+  display: none; /* Add this to completely hide when closed */
 }
 
 .dropdown-menu.open {
-  max-height: 500px;
+  max-height: 800px;
   opacity: 1;
   transform: translateY(0);
   animation: slideDown 0.3s forwards;
+  padding-bottom: 5px;
+  display: block; /* Keep this to show when open */
+  z-index: 999; /* Higher z-index to ensure visibility */
+}
+
+/* Fix for the dropdown trigger items */
+li.dropdown {
+  position: relative;
+  z-index: 990;
+}
+
+/* Specific fixes for campus, institute, and student section dropdowns */
+li.dropdown[aria-expanded="true"] + .dropdown-menu {
+  display: block;
+  z-index: 999;
+}
+
+/* Move these child dropdowns up to better align with parent */
+.dropdown-menu {
+  margin-top: -5px;
+}
+
+/* Fix layout issues with nested lists */
+.sidebar > ul > li + ul.dropdown-menu {
+  position: relative;
+  z-index: 999;
+}
+
+/* Ensure all dropdown menu items are visible */
+.dropdown-menu li {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Fix for links inside dropdown menus */
+.dropdown-menu li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
 
 @keyframes slideDown {
@@ -284,6 +338,9 @@
   border-radius: 6px;
   transition: all 0.2s ease;
   border-left: 0px solid rgba(255, 255, 255, 0);
+  opacity: 1 !important; /* Force visibility */
+  position: relative; /* Ensure proper stacking */
+  z-index: 10; /* Higher z-index */
 }
 
 .dropdown-menu li:hover {
@@ -324,6 +381,8 @@
   position: relative;
   padding: 2px 5px;
   border-radius: 4px;
+  width: auto; /* Ensure proper width */
+  z-index: 10; /* Higher z-index than parent */
 }
 
 .pdf-link:hover {
@@ -343,6 +402,11 @@
 
 .pdf-link svg {
   font-size: 14px;
+}
+
+/* About Us dropdown specific fix (if needed) */
+ul.dropdown-menu:nth-of-type(1).open {
+  z-index: 15; /* Higher z-index for About dropdown */
 }
 
 /* Media Queries for Responsive Design */

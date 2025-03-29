@@ -44,14 +44,14 @@ const Sidebar = () => {
     }
   }, [location]);
 
-  // Enhanced dropdown toggle with improved state management
   const toggleDropdown = (key, event) => {
     // Prevent event from bubbling up
     if (event) {
+      event.preventDefault();
       event.stopPropagation();
     }
     
-    // Close all other dropdowns when opening a new one
+    // Create a copy of current state
     const newDropdowns = {
       about: false,
       campus: false,
@@ -59,8 +59,10 @@ const Sidebar = () => {
       student: false,
     };
     
-    // Only toggle the clicked dropdown
+    // Toggle the clicked dropdown
     newDropdowns[key] = !dropdowns[key];
+    
+    // Update state
     setDropdowns(newDropdowns);
   };
 
@@ -315,12 +317,8 @@ const Sidebar = () => {
           <li className="search-icon">
             <FaSearch /> Search
           </li>
-
-          <li className={isActive("/register")}>
-            <Link to="/register">
-              <FaChalkboardTeacher /> Registration
-            </Link>
-          </li>
+          
+          {/* Registration button removed as requested */}
         </ul>
       </div>
     </>
